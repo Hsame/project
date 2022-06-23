@@ -25,6 +25,7 @@ public class FreeboardManagement extends Management {
 				boardSelect();
 			} else if (menuNo == 4) {
 				// 글 삭제 -- 번호로(no) 아이디 같을때
+				deletemember();
 			} else {
 				showInputError();
 			}
@@ -91,6 +92,13 @@ public class FreeboardManagement extends Management {
 	private int inputboardno() {
 		System.out.println("게시물 선택 > ");
 		return Integer.parseInt(sc.nextLine());
+	}
+	
+	private void deletemember() {
+		// 수정정보 입력
+		int no = inputboardno();
+		// DB 전달
+		fDAO.delete(no);
 	}
 
 }

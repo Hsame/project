@@ -91,5 +91,27 @@ public class FreeboardDAO extends DAO {
 		}
 		return freeboard;
 	}
+	
+	public void delete(int no) {
+		try {
+			connect();
+			String sql = "DELETE FROM free "
+					+ "WHERE no = "+ "'" + no + "'"; 
+			stmt = conn.createStatement();
+			
+			int result = stmt.executeUpdate(sql);
+			
+			if(result > 0) {
+				System.out.println("회원정보가 삭제되었습니다");
+			} else {
+				System.out.println("회원정보가 삭제되지않았습니다.");
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
 
 }
