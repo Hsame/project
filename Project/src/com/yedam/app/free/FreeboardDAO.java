@@ -46,7 +46,7 @@ public class FreeboardDAO extends DAO {
 	public void chboard(Freeboard freeboard) {
 		try {
 			connect();
-			String sql = "UPDATE free SET title = ?, content = ? WHERE no = ?;";
+			String sql = "UPDATE free SET title = ?, content = ? WHERE no = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, freeboard.getTitle());
 			pstmt.setString(2, freeboard.getContent());

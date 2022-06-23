@@ -58,16 +58,20 @@ public class FreeboardManagement extends Management {
 	}
 	
 	private void update() {
-		Freeboard freeboard = chcontent();
-		if (freeboard.getId().equals(linfo.getMemberId()) || freeboard.getId().equals("admin")) {
-			fDAO.chboard(freeboard);		
-		} else {
-			System.out.println("변경에 실패하였습니다");
-		}
+		int no = inputboardno();
+		Freeboard f1 = fDAO.selectOne(no);
+		Freeboard freeboard = chcontent(linfo);
+		System.out.println(linfo.getMemberId()); //현재 접속한 아이디
+		System.out.println(freeboard.getId()); // null값
+		System.out.println(f1.getId()); // 게시물 작성한 아이디
+		//필요한 것 게시물에 등록된 ID
+		
+		fDAO.chboard(freeboard);		
 	}
-	private Freeboard chcontent() {
+	
+	private Freeboard chcontent(Member loginInfo) {
 		Freeboard info = new Freeboard();
-		System.out.print("어떤 게시물을 수정? >");
+		System.out.print("어떤 게시물을 수정? > ");
 		info.setNo(Integer.parseInt(sc.nextLine()));
 		System.out.print("바꿀 글 제목 > ");
 		info.setTitle(sc.nextLine());
