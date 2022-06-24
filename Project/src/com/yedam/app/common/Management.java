@@ -2,8 +2,10 @@ package com.yedam.app.common;
 
 import java.util.Scanner;
 
+import com.yedam.app.anonymous.AnonymousboardManagement;
 import com.yedam.app.free.FreeboardManagement;
 import com.yedam.app.member.Member;
+import com.yedam.app.noticeboard.NoticeboardManagement;
 import com.yedam.app.profile.ProfileManagement;
 
 
@@ -16,15 +18,18 @@ public class Management {
 		boolean role = selectRole();
 		while (true) {
 			menuPrint(role);
+			System.out.print("메뉴 선택 > ");
 			int menuNo = menuSelect();
 			if(menuNo == 1) {
 				// 1. 공지사항
+				new NoticeboardManagement(loginInfo);
 			} else if (menuNo == 2 ) {
 				// 2. 자유게시판
 				new FreeboardManagement(loginInfo);
 			} else if (menuNo == 3 ) {
 				// 3. 익명게시판
-			} else if (menuNo == 0 ) {
+				new AnonymousboardManagement(loginInfo);
+			} else if (menuNo == 0 && role) {
 				// 0. 회원정보 열람
 				new ProfileManagement();
 			} else if (menuNo == 9 ) {
@@ -47,7 +52,7 @@ public class Management {
 		System.out.println();
 		System.out.println(menu);
 		System.out.println();
-		System.out.println("==!==!==!==!==!==!==!==!==!====!==!==!==!==!==!==");
+		System.out.println("==!==!==!==!==!==!==!==!==!====!==!==!==!==!==!==\n");
 	}
 
 	protected int menuSelect() {

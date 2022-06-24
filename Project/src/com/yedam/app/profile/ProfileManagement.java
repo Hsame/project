@@ -11,6 +11,7 @@ public class ProfileManagement extends Management {
 		boolean role = selectRole();
 		while (true) {
 			menuPrint(role);
+			System.out.print("메뉴 선택 > ");
 			int menuNo = menuSelect();
 			if (menuNo == 1) {
 				// 회원 전체조회
@@ -36,7 +37,7 @@ public class ProfileManagement extends Management {
 		System.out.println();
 		System.out.println("1.회원 전체조회 2.회원 부분조회 3.회원 비밀번호 수정 4.회원 삭제");
 		System.out.println();
-		System.out.println("==!==!==!==!==!==!==!==!==!====!==!==!==!==!==!==");
+		System.out.println("==!==!==!==!==!==!==!==!==!====!==!==!==!==!==!=n");
 	}
 
 	private void memberAll() {

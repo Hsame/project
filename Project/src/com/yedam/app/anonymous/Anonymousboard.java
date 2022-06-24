@@ -1,11 +1,11 @@
-package com.yedam.app.free;
+package com.yedam.app.anonymous;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Freeboard {
+public class Anonymousboard{
 	private int no;
 	private String title;
 	private String content;
@@ -14,6 +14,6 @@ public class Freeboard {
 	
 	@Override
 	public String toString() {	
-		return "[" +"번호 : "+ no + ", 제목 : " + title + ", 게시자 : " + id + ", 작성일자 : " + regdate + "]";
+		return "[" +"번호 : "+ no + ", 제목 : " + title + ", 게시자 : " + "*****" + ", 작성일자 : " + regdate + "]";
 	}
 }

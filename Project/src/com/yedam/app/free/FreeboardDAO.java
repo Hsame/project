@@ -1,6 +1,8 @@
 package com.yedam.app.free;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.yedam.app.common.DAO;
 
@@ -19,7 +21,6 @@ public class FreeboardDAO extends DAO {
 	}
 
 	public void insert(Freeboard freeboard) {
-
 		try {
 			connect();
 			String sql = "INSERT INTO free VALUES (free_next_seq.NEXTVAL, ?, ?, ?,SYSDATE)";
@@ -42,6 +43,8 @@ public class FreeboardDAO extends DAO {
 			disconnect();
 		}
 	}
+	
+	
 
 	public void chboard(Freeboard freeboard) {
 		try {
@@ -102,9 +105,9 @@ public class FreeboardDAO extends DAO {
 			int result = stmt.executeUpdate(sql);
 			
 			if(result > 0) {
-				System.out.println("회원정보가 삭제되었습니다");
+				System.out.println("게시물이 삭제되었습니다");
 			} else {
-				System.out.println("회원정보가 삭제되지않았습니다.");
+				System.out.println("게시물이 삭제되지않았습니다.");
 			}
 			
 		}catch (SQLException e) {
@@ -113,5 +116,146 @@ public class FreeboardDAO extends DAO {
 			disconnect();
 		}
 	}
+	
+	public List<Freeboard> selectAll() {
+		List<Freeboard> list = new ArrayList<>();
+		try {
+			connect();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM free");
+			while (rs.next()) {
+				Freeboard freeboard = new Freeboard();
+				freeboard.setNo(rs.getInt("no"));
+				freeboard.setTitle(rs.getString("title"));
+				freeboard.setId(rs.getString("id"));
+				freeboard.setRegdate(rs.getString("regdate"));
+				
+				list.add(freeboard);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
+	
+	public void insertcomment(Freeboardcomment freeboardcomment) {
+
+		try {
+			connect();
+			String sql = "INSERT INTO comments (nono,comm, id, no) VALUES (freecom_next_seq.NEXTVAL,?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(2, freeboardcomment.getId());
+			pstmt.setString(1, freeboardcomment.getComment());
+			pstmt.setInt(3, freeboardcomment.getNo());
+			
+			int result = pstmt.executeUpdate();
+
+			if (result > 0) {
+				System.out.println("정상적으로 게시되었습니다.");
+			} else {
+				System.out.println("게시물 등록에 실패하였습니다");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+	
+	public Freeboardcomment selectOnecomment(int no) {
+		Freeboardcomment freeboardcomment = null;
+		try {
+			connect();
+			String sql = "SELECT * FROM comments WHERE nono = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rs = pstmt.executeQuery();		
+			if(rs.next()) {
+				freeboardcomment = new Freeboardcomment();
+				freeboardcomment.setNo(rs.getInt("no"));
+				freeboardcomment.setId(rs.getString("id"));
+				freeboardcomment.setNono(rs.getInt("nono"));
+				freeboardcomment.setComment(rs.getString("comm"));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return freeboardcomment;
+	}
+
+	public void chcomment(Freeboardcomment freeboardcomment) {
+		try {
+			connect();
+			String sql = "UPDATE comments SET comm = ? WHERE nono = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, freeboardcomment.getComment());
+			pstmt.setInt(2, freeboardcomment.getNono());
+
+			int result = pstmt.executeUpdate();
+			if (result > 0) {
+				System.out.println("정상적으로 변경되었습니다.");
+			} else {
+				System.out.println("변경에 실패하였습니다.");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+	
+	public void deletecomment(int no) {
+		try {
+			connect();
+			String sql = "DELETE FROM comments "
+					+ "WHERE nono = "+ "'" + no + "'"; 
+			stmt = conn.createStatement();
+			
+			int result = stmt.executeUpdate(sql);
+			
+			if(result > 0) {
+				System.out.println("게시물이 삭제되었습니다");
+			} else {
+				System.out.println("게시물이 삭제되지않았습니다.");
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+	
+	public List<Freeboardcomment> comment(int no) {
+		List<Freeboardcomment> list = new ArrayList<>();
+		try {
+			connect();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM comments WHERE no = " + "'" + no +"'");
+			while (rs.next()) {
+				Freeboardcomment freeboardcomment = new Freeboardcomment();	
+				freeboardcomment = new Freeboardcomment();
+				freeboardcomment.setNo(rs.getInt("no"));
+				freeboardcomment.setId(rs.getString("id"));
+				freeboardcomment.setNono(rs.getInt("nono"));
+				freeboardcomment.setComment(rs.getString("comm"));
+				
+				list.add(freeboardcomment);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
+	
 
 }
