@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.app.common.DAO;
+import com.yedam.app.free.Freeboardcomment;
 
 public class AnonymousboardDAO extends DAO{
 	
@@ -131,6 +132,123 @@ public class AnonymousboardDAO extends DAO{
 				anonymousboard.setRegdate(rs.getString("regdate"));
 				
 				list.add(anonymousboard);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
+	
+	public void insertcomment(Anonymousboardcomment anonymousboardcomment) {
+
+		try {
+			connect();
+			String sql = "INSERT INTO comments (nono,comm, id, no) VALUES (anonycom_next_seq.NEXTVAL,?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(2, anonymousboardcomment.getId());
+			pstmt.setString(1, anonymousboardcomment.getComment());
+			pstmt.setInt(3, anonymousboardcomment.getNo());
+			
+			int result = pstmt.executeUpdate();
+
+			if (result > 0) {
+				System.out.println("정상적으로 게시되었습니다.\n");
+			} else {
+				System.out.println("게시물 등록에 실패하였습니다\n");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+	
+	public Anonymousboardcomment selectOnecomment(int no) {
+		Anonymousboardcomment anonymousboardcomment = null;
+		try {
+			connect();
+			String sql = "SELECT * FROM comments WHERE nono = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rs = pstmt.executeQuery();		
+			if(rs.next()) {
+				anonymousboardcomment = new Anonymousboardcomment();
+				anonymousboardcomment.setNo(rs.getInt("no"));
+				anonymousboardcomment.setId(rs.getString("id"));
+				anonymousboardcomment.setNono(rs.getInt("nono"));
+				anonymousboardcomment.setComment(rs.getString("comm"));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return anonymousboardcomment;
+	}
+
+	public void chcomment(Anonymousboardcomment anonymousboardcomment) {
+		try {
+			connect();
+			String sql = "UPDATE comments SET comm = ? WHERE nono = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, anonymousboardcomment.getComment());
+			pstmt.setInt(2, anonymousboardcomment.getNono());
+
+			int result = pstmt.executeUpdate();
+			if (result > 0) {
+				System.out.println("정상적으로 변경되었습니다.\n");
+			} else {
+				System.out.println("변경에 실패하였습니다.\n");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+	
+	public void deletecomment(int no) {
+		try {
+			connect();
+			String sql = "DELETE FROM comments "
+					+ "WHERE nono = "+ "'" + no + "'"; 
+			stmt = conn.createStatement();
+			
+			int result = stmt.executeUpdate(sql);
+			
+			if(result > 0) {
+				System.out.println("게시물이 삭제되었습니다\n");
+			} else {
+				System.out.println("게시물이 삭제되지않았습니다.\n");
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+	
+	public List<Anonymousboardcomment> comment(int no) {
+		List<Anonymousboardcomment> list = new ArrayList<>();
+		try {
+			connect();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM comments WHERE no = " + "'" + no +"'");
+			while (rs.next()) {
+				Anonymousboardcomment anonymousboardcomment = new Anonymousboardcomment();	
+				anonymousboardcomment = new Anonymousboardcomment();
+				anonymousboardcomment.setNo(rs.getInt("no"));
+				anonymousboardcomment.setId(rs.getString("id"));
+				anonymousboardcomment.setNono(rs.getInt("nono"));
+				anonymousboardcomment.setComment(rs.getString("comm"));
+				
+				list.add(anonymousboardcomment);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

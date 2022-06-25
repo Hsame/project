@@ -139,6 +139,123 @@ public class NoticeboardDAO extends DAO{
 		}
 		return list;
 	}
+	
+	public void insertcomment(Noticeboardcomment noticeboardcomment) {
+
+		try {
+			connect();
+			String sql = "INSERT INTO comments (nono,comm, id, no) VALUES (noticecom_next_seq.NEXTVAL,?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(2, noticeboardcomment.getId());
+			pstmt.setString(1, noticeboardcomment.getComment());
+			pstmt.setInt(3, noticeboardcomment.getNo());
+			
+			int result = pstmt.executeUpdate();
+
+			if (result > 0) {
+				System.out.println("정상적으로 게시되었습니다.\n");
+			} else {
+				System.out.println("게시물 등록에 실패하였습니다\n");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+	
+	public Noticeboardcomment selectOnecomment(int no) {
+		Noticeboardcomment noticeboardcomment = null;
+		try {
+			connect();
+			String sql = "SELECT * FROM comments WHERE nono = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rs = pstmt.executeQuery();		
+			if(rs.next()) {
+				noticeboardcomment = new Noticeboardcomment();
+				noticeboardcomment.setNo(rs.getInt("no"));
+				noticeboardcomment.setId(rs.getString("id"));
+				noticeboardcomment.setNono(rs.getInt("nono"));
+				noticeboardcomment.setComment(rs.getString("comm"));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return noticeboardcomment;
+	}
+
+	public void chcomment(Noticeboardcomment noticeboardcomment) {
+		try {
+			connect();
+			String sql = "UPDATE comments SET comm = ? WHERE nono = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, noticeboardcomment.getComment());
+			pstmt.setInt(2, noticeboardcomment.getNono());
+
+			int result = pstmt.executeUpdate();
+			if (result > 0) {
+				System.out.println("정상적으로 변경되었습니다.\n");
+			} else {
+				System.out.println("변경에 실패하였습니다.\n");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+	
+	public void deletecomment(int no) {
+		try {
+			connect();
+			String sql = "DELETE FROM comments "
+					+ "WHERE nono = "+ "'" + no + "'"; 
+			stmt = conn.createStatement();
+			
+			int result = stmt.executeUpdate(sql);
+			
+			if(result > 0) {
+				System.out.println("게시물이 삭제되었습니다\n");
+			} else {
+				System.out.println("게시물이 삭제되지않았습니다.\n");
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+	
+	public List<Noticeboardcomment> comment(int no) {
+		List<Noticeboardcomment> list = new ArrayList<>();
+		try {
+			connect();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM comments WHERE no = " + "'" + no +"'");
+			while (rs.next()) {
+				Noticeboardcomment noticeboardcomment = new Noticeboardcomment();	
+				noticeboardcomment = new Noticeboardcomment();
+				noticeboardcomment.setNo(rs.getInt("no"));
+				noticeboardcomment.setId(rs.getString("id"));
+				noticeboardcomment.setNono(rs.getInt("nono"));
+				noticeboardcomment.setComment(rs.getString("comm"));
+				
+				list.add(noticeboardcomment);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
 
 
 }

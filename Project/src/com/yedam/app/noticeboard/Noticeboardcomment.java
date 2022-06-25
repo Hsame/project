@@ -1,11 +1,11 @@
-package com.yedam.app.free;
+package com.yedam.app.noticeboard;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Freeboardcomment {
+public class Noticeboardcomment {
 	String id;
 	String comment;
 	int no;
@@ -25,3 +25,4 @@ public class Freeboardcomment {
 
 	
 }
+	

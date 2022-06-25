@@ -14,6 +14,6 @@ public class Noticeboard {
 	
 	@Override
 	public String toString() {	
-		return "[" +"번호 : "+ no + ", 제목 : " + title + ", 게시자 : " + id + ", 작성일자 : " + regdate + "]";
+		return String.format("%5d", no) + "            " + String.format("%-20s", title) +  String.format("%-15s", id) + "    " + regdate;
 	}
 }

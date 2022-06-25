@@ -14,6 +14,8 @@ public class FreeboardManagement extends Management {
 		linfo = loginInfo;
 		boolean role = selectRole();
 		while (true) {
+			System.out.println("   번호              제목                 게시자                     작성일자");
+			System.out.println("----------------------------------------------------------------------------");
 			boardAll();
 			menuPrint(role);
 			System.out.print("메뉴 선택 > ");
@@ -42,11 +44,11 @@ public class FreeboardManagement extends Management {
 
 	@Override
 	protected void menuPrint(boolean role) {
-		System.out.println("==!==!==!==!==!==!==!==!==!====!==!==!==!==!==!==");
+		System.out.println("----------------------------------------------------------------------------");
 		System.out.println();
-		System.out.println("1.글 조회 2.글 작성 3.글 수정 4.글 삭제 5.뒤로가기");
+		System.out.println("        1.글 조회       2.글 작성       3.글 수정       4.글 삭제       5.뒤로가기");
 		System.out.println();
-		System.out.println("==!==!==!==!==!==!==!==!==!====!==!==!==!==!==!==\n");
+		System.out.println("----------------------------------------------------------------------------\n");
 	}
 
 	private void create() {
@@ -99,7 +101,7 @@ public class FreeboardManagement extends Management {
 				System.out.println("작성일자 : " + freeboard.getRegdate());
 				System.out.println("제목 : " + freeboard.getTitle());
 				System.out.println("내용 : " + freeboard.getContent() + "\n\n");
-
+				
 				System.out.println("댓글");			
 				comment(no);
 				commentPrint();
@@ -109,7 +111,7 @@ public class FreeboardManagement extends Management {
 					createcomment(no);
 				} else if (menuNo == 2) {
 					// 2. 댓글 수정
-					updatecomment(no);
+					updatecomment(linfo);
 				} else if (menuNo == 3) {
 					// 3. 댓글 삭제
 					deletecomment(linfo);
@@ -194,8 +196,9 @@ public class FreeboardManagement extends Management {
 		fDAO.insertcomment(freeboardcomment);
 	}
 
-	private void updatecomment(int no) {
+	private void updatecomment(Member loginInfo) {
 		Freeboardcomment freeboardcomment = chcomment(linfo);
+		int no = freeboardcomment.getNono();
 		Freeboardcomment f1 = fDAO.selectOnecomment(no);
 //		System.out.println(linfo.getMemberId()); // 현재 접속한 아이디
 //		System.out.println(f1.getId()); // 게시물 작성한 아이디
@@ -234,8 +237,9 @@ public class FreeboardManagement extends Management {
 		// DB 전달
 		if (linfo.getMemberId().equals(f1.getId()) || linfo.getMemberId().equals("admin")) {
 			fDAO.deletecomment(no);
+			System.out.println("댓글을 삭제하였습니다");
 		} else {
-			System.out.println("삭제에 실패하였습니다");
+			System.out.println("권한이 없습니다.");
 		}
 	}
 	

@@ -32,9 +32,9 @@ public class FreeboardDAO extends DAO {
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
-				System.out.println("정상적으로 게시되었습니다.");
+				System.out.println("정상적으로 게시되었습니다.\n");
 			} else {
-				System.out.println("게시물 등록에 실패하였습니다");
+				System.out.println("게시물 등록에 실패하였습니다\n");
 			}
 
 		} catch (SQLException e) {
@@ -57,9 +57,9 @@ public class FreeboardDAO extends DAO {
 
 			int result = pstmt.executeUpdate();
 			if (result > 0) {
-				System.out.println("정상적으로 변경되었습니다.");
+				System.out.println("정상적으로 변경되었습니다.\n");
 			} else {
-				System.out.println("변경에 실패하였습니다.");
+				System.out.println("변경에 실패하였습니다.\n");
 			}
 
 		} catch (SQLException e) {
@@ -105,9 +105,9 @@ public class FreeboardDAO extends DAO {
 			int result = stmt.executeUpdate(sql);
 			
 			if(result > 0) {
-				System.out.println("게시물이 삭제되었습니다");
+				System.out.println("게시물이 삭제되었습니다\n");
 			} else {
-				System.out.println("게시물이 삭제되지않았습니다.");
+				System.out.println("게시물이 삭제되지않았습니다.\n");
 			}
 			
 		}catch (SQLException e) {
@@ -153,9 +153,9 @@ public class FreeboardDAO extends DAO {
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
-				System.out.println("정상적으로 게시되었습니다.");
+				System.out.println("정상적으로 게시되었습니다.\n");
 			} else {
-				System.out.println("게시물 등록에 실패하였습니다");
+				System.out.println("게시물 등록에 실패하였습니다\n");
 			}
 
 		} catch (SQLException e) {
@@ -199,9 +199,9 @@ public class FreeboardDAO extends DAO {
 
 			int result = pstmt.executeUpdate();
 			if (result > 0) {
-				System.out.println("정상적으로 변경되었습니다.");
+				System.out.println("정상적으로 변경되었습니다.\n");
 			} else {
-				System.out.println("변경에 실패하였습니다.");
+				System.out.println("변경에 실패하였습니다.\n");
 			}
 
 		} catch (SQLException e) {
@@ -221,9 +221,9 @@ public class FreeboardDAO extends DAO {
 			int result = stmt.executeUpdate(sql);
 			
 			if(result > 0) {
-				System.out.println("게시물이 삭제되었습니다");
+				System.out.println("게시물이 삭제되었습니다\n");
 			} else {
-				System.out.println("게시물이 삭제되지않았습니다.");
+				System.out.println("게시물이 삭제되지않았습니다.\n");
 			}
 			
 		}catch (SQLException e) {

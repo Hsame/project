@@ -1,11 +1,11 @@
-package com.yedam.app.free;
+package com.yedam.app.anonymous;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Freeboardcomment {
+public class Anonymousboardcomment {
 	String id;
 	String comment;
 	int no;
@@ -18,7 +18,7 @@ public class Freeboardcomment {
 		if (id == null) {
 			System.out.print("");
 		} else {
-			result += nono +". " + String.format("%-10s", id) +"   "+ comment;
+			result += nono +". " + String.format("%-10s", "*****") +"   "+ comment;
 		}
 		return result;
 	}
