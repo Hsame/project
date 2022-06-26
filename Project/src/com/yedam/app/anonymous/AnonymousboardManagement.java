@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yedam.app.common.Management;
 import com.yedam.app.member.Member;
+import com.yedam.app.noticeboard.Noticeboard;
 
 
 public class AnonymousboardManagement extends Management {
@@ -18,6 +19,7 @@ public class AnonymousboardManagement extends Management {
 			System.out.println("   번호              제목                 게시자                     작성일자");
 			System.out.println("----------------------------------------------------------------------------");
 			boardAll();
+			System.out.println("\n\n\n");
 			menuPrint(role);
 			System.out.print("메뉴 선택 > ");
 			int menuNo = menuSelect();
@@ -27,17 +29,20 @@ public class AnonymousboardManagement extends Management {
 			} else if (menuNo == 2) {
 				// 글 작성
 				create();
-			} else if (menuNo == 3 && role) {
+			} else if (menuNo == 3) {
+				// 글 검색
+				search();
+			} else if (menuNo == 4 && role) {
 				// 글 수정 -- 번호로(no)
 				update();
-			} else if (menuNo == 4 && role) {
+			} else if (menuNo == 5 && role) {
 				// 글 삭제 -- 번호로(no) 아이디 같을때
 				deletemember(loginInfo);
-			} else if (menuNo == 5) {
+			} else if (menuNo==6){				
 				// 뒤로가기
 				back();
 				break;
-			} else {				
+			} else {
 				showInputError();
 			}
 		}
@@ -46,16 +51,16 @@ public class AnonymousboardManagement extends Management {
 	@Override
 	protected void menuPrint(boolean role) {
 		String menu = "";
-		menu += "1.글 조회 2.글 작성 ";
+		menu += "  1.글 조회  ::  2.글 작성  ::  3.글 검색";
 		if (role) {
-			menu += "3.글 수정 4.글 삭제 ";
+			menu += "  ::  4.글 수정  ::  5.글 삭제 ";
 		}
-		menu += "5.뒤로가기";
-		System.out.println("----------------------------------------------------------------------------");
+		menu += "  ::  5.뒤로가기";
+		System.out.println("============================================================================");
 		System.out.println();
 		System.out.println(menu);
 		System.out.println();
-		System.out.println("----------------------------------------------------------------------------\n");
+		System.out.println("============================================================================\n");
 	}
 	
 	private void create() {
@@ -153,7 +158,7 @@ public class AnonymousboardManagement extends Management {
 		// 수정정보 입력
 		Anonymousboard anonymousboard = inputboarddelno(linfo);
 		int no = anonymousboard.getNo();
-		Anonymousboard f1 = aDAO.selectOne(no);
+		aDAO.selectOne(no);
 		
 		// DB 전달
 		if(linfo.getMemberId().equals("admin")) {
@@ -168,6 +173,25 @@ public class AnonymousboardManagement extends Management {
 		for(Anonymousboard anonymousboard : list) {
 			System.out.println(anonymousboard);
 		}
+	}
+	
+	private void search() {
+		Anonymousboard title = inputboardname();
+		List<Anonymousboard> list = aDAO.searchboard(title);
+		for (Anonymousboard anonymousboard : list) {
+			System.out.println("검색 결과");
+			System.out.println("   번호             제목                 게시자                     작성일자");
+			System.out.println("----------------------------------------------------------------------------");
+			System.out.println(anonymousboard);
+			System.out.println("\n\n\n\n");
+		}
+	}
+
+	private Anonymousboard inputboardname() {
+		Anonymousboard info = new Anonymousboard();
+		System.out.print("검색 > ");
+		info.setTitle(sc.nextLine());
+		return info;
 	}
 	
 	private void back() {
@@ -255,6 +279,8 @@ public class AnonymousboardManagement extends Management {
 			System.out.println(anonymousboardcomment);
 		}
 	}
+	
+	
 
 	
 	

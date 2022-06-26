@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.yedam.app.common.DAO;
 import com.yedam.app.free.Freeboardcomment;
+import com.yedam.app.noticeboard.Noticeboard;
 
 public class AnonymousboardDAO extends DAO{
 	
@@ -128,6 +129,30 @@ public class AnonymousboardDAO extends DAO{
 				Anonymousboard anonymousboard = new Anonymousboard();
 				anonymousboard.setNo(rs.getInt("no"));
 				anonymousboard.setTitle(rs.getString("title"));
+				anonymousboard.setId(rs.getString("id"));
+				anonymousboard.setRegdate(rs.getString("regdate"));
+				
+				list.add(anonymousboard);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
+	
+	public List<Anonymousboard> searchboard(Anonymousboard anonymousboard) {
+		List<Anonymousboard> list = new ArrayList<>();
+		try {
+			connect();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM notice WHERE title LIKE " + "'%" + anonymousboard.getTitle() + "%'");
+			if (rs.next()) {
+				anonymousboard = new Anonymousboard();
+				anonymousboard.setNo(rs.getInt("no"));
+				anonymousboard.setTitle(rs.getString("title"));
+				anonymousboard.setContent(rs.getString("content"));
 				anonymousboard.setId(rs.getString("id"));
 				anonymousboard.setRegdate(rs.getString("regdate"));
 				

@@ -3,7 +3,6 @@ package com.yedam.app.noticeboard;
 import java.util.List;
 
 import com.yedam.app.common.Management;
-
 import com.yedam.app.member.Member;
 
 public class NoticeboardManagement extends Management {
@@ -18,6 +17,7 @@ public class NoticeboardManagement extends Management {
 			System.out.println("   번호              제목                 게시자                     작성일자");
 			System.out.println("----------------------------------------------------------------------------");
 			boardAll();
+			System.out.println("\n\n\n");
 			menuPrint(role);
 			System.out.print("메뉴 선택 > ");
 			int menuNo = menuSelect();
@@ -34,6 +34,8 @@ public class NoticeboardManagement extends Management {
 				// 글 삭제 -- 번호로(no) 아이디 같을때
 				deletemember(loginInfo);
 			} else if (menuNo == 5) {
+				search();
+			} else if (menuNo == 6){				
 				// 뒤로가기
 				back();
 				break;
@@ -46,16 +48,16 @@ public class NoticeboardManagement extends Management {
 	@Override
 	protected void menuPrint(boolean role) {
 		String menu = "";
-		menu += "       1.글 조회 ";
+		menu += " 1.글 조회";
 		if (role) {
-			menu += "       2.글 작성       3.글 수정       4.글 삭제 ";
+			menu += "  ::  2.글 작성  ::  3.글 수정  ::  4.글 삭제 ";
 		}
-		menu += "       5.뒤로가기";
-		System.out.println("----------------------------------------------------------------------------");
-		System.out.println();
+		menu += "  ::  5. 글 검색  ::  6. 뒤로가기";
+		System.out.println("============================================================================");
+		System.out.println("");
 		System.out.println(menu);
 		System.out.println();
-		System.out.println("----------------------------------------------------------------------------\n");
+		System.out.println("============================================================================\n");
 	}
 	
 	private void create() {
@@ -64,6 +66,7 @@ public class NoticeboardManagement extends Management {
 		nDAO.insert(noticeboard);
 	}
 	
+	
 	private Noticeboard inputboard(Member loginInfo) {
 		Noticeboard info = new Noticeboard();
 		System.out.print("글 제목 > ");
@@ -71,6 +74,25 @@ public class NoticeboardManagement extends Management {
 		System.out.print("글 내용 > ");
 		info.setContent(sc.nextLine());
 		info.setId(loginInfo.getMemberId());
+		return info;
+	}
+	
+	private void search() {
+		Noticeboard title = inputboardname();
+		List<Noticeboard> list = nDAO.searchboard(title);
+		for (Noticeboard noticeboard : list) {
+			System.out.println("검색 결과");
+			System.out.println("   번호              제목                 게시자                     작성일자");
+			System.out.println("----------------------------------------------------------------------------");
+			System.out.println(noticeboard);
+			System.out.println("\n\n\n\n");
+		}
+	}
+
+	private Noticeboard inputboardname() {
+		Noticeboard info = new Noticeboard();
+		System.out.print("검색 > ");
+		info.setTitle(sc.nextLine());
 		return info;
 	}
 	

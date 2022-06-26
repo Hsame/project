@@ -14,6 +14,6 @@ public class Anonymousboard{
 	
 	@Override
 	public String toString() {	
-		return String.format("%5d", no) + "            " + String.format("%-20s", title) +  String.format("%-15s", id) + "    " + regdate;
+		return String.format("%5d", no) + "            " + String.format("%-20s", title) +  String.format("%-15s", "*****") + "    " + regdate;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.app.common.DAO;
+import com.yedam.app.free.Freeboard;
 
 public class NoticeboardDAO extends DAO{
 	
@@ -248,6 +249,30 @@ public class NoticeboardDAO extends DAO{
 				noticeboardcomment.setComment(rs.getString("comm"));
 				
 				list.add(noticeboardcomment);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
+	
+	public List<Noticeboard> searchboard(Noticeboard noticeboard) {
+		List<Noticeboard> list = new ArrayList<>();
+		try {
+			connect();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM notice WHERE title LIKE " + "'%" + noticeboard.getTitle() + "%'");
+			if (rs.next()) {
+				noticeboard = new Noticeboard();
+				noticeboard.setNo(rs.getInt("no"));
+				noticeboard.setTitle(rs.getString("title"));
+				noticeboard.setContent(rs.getString("content"));
+				noticeboard.setId(rs.getString("id"));
+				noticeboard.setRegdate(rs.getString("regdate"));
+				
+				list.add(noticeboard);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

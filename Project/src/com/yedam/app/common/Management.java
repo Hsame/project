@@ -45,14 +45,14 @@ public class Management {
 	protected void menuPrint(boolean role) {
 		String menu = "";
 		if(role) {
-			menu += "0.회원정보 열람 ";
+			menu += "   0.회원정보 열람  ::";
 		}
-		menu += "1.공지사항 2.자유게시판 3.익명게시판 9.종료";
-		System.out.println("==!==!==!==!==!==!==!==!==!====!==!==!==!==!==!==");
+		menu += "   1.공지사항  ::  2.자유게시판  ::  3.익명게시판  ::  9.종료";
+		System.out.println("============================================================================");
 		System.out.println();
 		System.out.println(menu);
 		System.out.println();
-		System.out.println("==!==!==!==!==!==!==!==!==!====!==!==!==!==!==!==\n");
+		System.out.println("============================================================================\n");
 	}
 
 	protected int menuSelect() {

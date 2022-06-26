@@ -17,6 +17,7 @@ public class FreeboardManagement extends Management {
 			System.out.println("   번호              제목                 게시자                     작성일자");
 			System.out.println("----------------------------------------------------------------------------");
 			boardAll();
+			System.out.println("\n\n\n");
 			menuPrint(role);
 			System.out.print("메뉴 선택 > ");
 			int menuNo = menuSelect();
@@ -33,6 +34,9 @@ public class FreeboardManagement extends Management {
 				// 글 삭제 -- 번호로(no) 아이디 같을때
 				deletemember(loginInfo);
 			} else if (menuNo == 5) {
+				// 글검색 --글 제목으로 검색
+				search();
+			} else if (menuNo == 6) {
 				// 뒤로가기
 				back();
 				break;
@@ -44,11 +48,11 @@ public class FreeboardManagement extends Management {
 
 	@Override
 	protected void menuPrint(boolean role) {
-		System.out.println("----------------------------------------------------------------------------");
+		System.out.println("============================================================================");
 		System.out.println();
-		System.out.println("        1.글 조회       2.글 작성       3.글 수정       4.글 삭제       5.뒤로가기");
+		System.out.println("   1.글 조회  ::  2.글 작성  ::  3.글 수정  ::  4.글 삭제  ::  5. 글 검색  ::  6.뒤로가기");
 		System.out.println();
-		System.out.println("----------------------------------------------------------------------------\n");
+		System.out.println("============================================================================\n");
 	}
 
 	private void create() {
@@ -101,8 +105,8 @@ public class FreeboardManagement extends Management {
 				System.out.println("작성일자 : " + freeboard.getRegdate());
 				System.out.println("제목 : " + freeboard.getTitle());
 				System.out.println("내용 : " + freeboard.getContent() + "\n\n");
-				
-				System.out.println("댓글");			
+
+				System.out.println("댓글");
 				comment(no);
 				commentPrint();
 				int menuNo = menuSelect();
@@ -128,22 +132,23 @@ public class FreeboardManagement extends Management {
 		}
 
 	}
-	
-	//게시물 선택
+	// 게시물 검색
+
+	// 게시물 선택
 	private int inputboardno() {
 		System.out.print("게시물 선택(번호로 선택해주세요) > ");
 		return Integer.parseInt(sc.nextLine());
 	}
 
-	//삭제 게시물 선택
+	// 삭제 게시물 선택
 	private Freeboard inputboarddelno(Member loginInfo) {
 		Freeboard info = new Freeboard();
 		System.out.print("삭제할 게시물을 선택해주세요 > ");
 		info.setNo(Integer.parseInt(sc.nextLine()));
 		return info;
 	}
-	
-	//삭제
+
+	// 삭제
 	private void deletemember(Member loginInfo) {
 		// 수정정보 입력
 		Freeboard freeboard = inputboarddelno(linfo);
@@ -165,6 +170,25 @@ public class FreeboardManagement extends Management {
 		}
 	}
 
+	private void search() {
+		Freeboard title = inputboardname();
+		List<Freeboard> list = fDAO.searchboard(title);
+		for (Freeboard freeboard : list) {
+			System.out.println("검색 결과");
+			System.out.println("   번호              제목                 게시자                     작성일자");
+			System.out.println("----------------------------------------------------------------------------");
+			System.out.println(freeboard);
+			System.out.println("\n\n\n\n");
+		}
+	}
+
+	private Freeboard inputboardname() {
+		Freeboard info = new Freeboard();
+		System.out.print("검색 > ");
+		info.setTitle(sc.nextLine());
+		return info;
+	}
+
 	private void back() {
 		System.out.println("메인으로 돌아갑니다");
 	}
@@ -172,13 +196,13 @@ public class FreeboardManagement extends Management {
 	private void backboard() {
 		System.out.println("메인 게시판으로 돌아갑니다.");
 	}
-	
-	//댓글 메뉴 출력
+
+	// 댓글 메뉴 출력
 	private void commentPrint() {
 		System.out.println("1.댓글 입력 2.댓글 수정 3.댓글 삭제 4.뒤로가기");
 		System.out.print("메뉴 선택 > ");
 	}
-	
+
 	// 댓글 입력
 	private Freeboardcomment inputComment(Member loginInfo, int no) {
 		Freeboardcomment info = new Freeboardcomment();
@@ -188,7 +212,7 @@ public class FreeboardManagement extends Management {
 		info.setNo(no);
 		return info;
 	}
-	
+
 	// 댓글 입력 insert
 	private void createcomment(int no) {
 		Freeboardcomment freeboardcomment = inputComment(linfo, no);
@@ -209,7 +233,7 @@ public class FreeboardManagement extends Management {
 			System.out.println("변경에 실패하였습니다.");
 		}
 	}
-	
+
 	private Freeboardcomment chcomment(Member loginInfo) {
 		Freeboardcomment info = new Freeboardcomment();
 		System.out.print("어떤 댓글을 수정? > ");
@@ -218,16 +242,16 @@ public class FreeboardManagement extends Management {
 		info.setComment(sc.nextLine());
 		return info;
 	}
-	
-	//삭제 게시물 선택
+
+	// 삭제 게시물 선택
 	private Freeboardcomment inputdelcomment(Member loginInfo) {
 		Freeboardcomment info = new Freeboardcomment();
 		System.out.print("삭제할 댓글을 선택해주세요 > ");
 		info.setNono(Integer.parseInt(sc.nextLine()));
 		return info;
 	}
-	
-	//삭제
+
+	// 삭제
 	private void deletecomment(Member loginInfo) {
 		// 삭제정보 입력
 		Freeboardcomment freeboardcomment = inputdelcomment(linfo);
@@ -242,7 +266,7 @@ public class FreeboardManagement extends Management {
 			System.out.println("권한이 없습니다.");
 		}
 	}
-	
+
 	private void comment(int no) {
 		List<Freeboardcomment> list = fDAO.comment(no);
 		for (Freeboardcomment freeboardcomment : list) {

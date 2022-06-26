@@ -25,6 +25,9 @@ public class ProfileManagement extends Management {
 			} else if (menuNo == 4) {
 				// 회원 정보 삭제
 				deletemember();
+			} else if (menuNo == 5){ 
+				back();
+				break;
 			} else {
 				showInputError();
 			}
@@ -33,11 +36,11 @@ public class ProfileManagement extends Management {
 
 	@Override
 	protected void menuPrint(boolean role) {
-		System.out.println("==!==!==!==!==!==!==!==!==!====!==!==!==!==!==!==");
+		System.out.println("----------------------------------------------------------------------------");
 		System.out.println();
-		System.out.println("1.회원 전체조회 2.회원 부분조회 3.회원 비밀번호 수정 4.회원 삭제");
+		System.out.println("1.회원 전체조회  ::  2.회원 부분조회  ::  3.회원 비밀번호 수정  ::  4.회원 삭제  ::  5.뒤로가기");
 		System.out.println();
-		System.out.println("==!==!==!==!==!==!==!==!==!====!==!==!==!==!==!=n");
+		System.out.println("----------------------------------------------------------------------------\n");
 	}
 
 	private void memberAll() {
@@ -85,6 +88,10 @@ public class ProfileManagement extends Management {
 		String member = inputmemberid();
 		// DB 전달
 		pDAO.delete(member);
+	}
+	
+	private void back() {
+		System.out.println("이전 메뉴로 돌아갑니다");
 	}
 
 }
