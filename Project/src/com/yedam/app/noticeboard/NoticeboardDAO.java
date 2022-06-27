@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.app.common.DAO;
-import com.yedam.app.free.Freeboard;
 
 public class NoticeboardDAO extends DAO{
 	
@@ -36,8 +35,10 @@ public class NoticeboardDAO extends DAO{
 
 			if (result > 0) {
 				System.out.println("정상적으로 게시되었습니다.");
+				System.out.println("----------------------------------------------------------------------------\n\n");
 			} else {
 				System.out.println("게시물 등록에 실패하였습니다");
+				System.out.println("----------------------------------------------------------------------------\n\n");
 			}
 
 		} catch (SQLException e) {
@@ -59,8 +60,10 @@ public class NoticeboardDAO extends DAO{
 			int result = pstmt.executeUpdate();
 			if (result > 0) {
 				System.out.println("정상적으로 변경되었습니다.");
+				System.out.println("----------------------------------------------------------------------------\n\n");
 			} else {
 				System.out.println("변경에 실패하였습니다.");
+				System.out.println("----------------------------------------------------------------------------\n\n");
 			}
 
 		} catch (SQLException e) {
@@ -107,8 +110,10 @@ public class NoticeboardDAO extends DAO{
 			
 			if(result > 0) {
 				System.out.println("게시물이 삭제되었습니다");
+				System.out.println("----------------------------------------------------------------------------\n\n");
 			} else {
 				System.out.println("게시물이 삭제되지않았습니다.");
+				System.out.println("----------------------------------------------------------------------------\n\n");
 			}
 			
 		}catch (SQLException e) {
@@ -154,9 +159,11 @@ public class NoticeboardDAO extends DAO{
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
-				System.out.println("정상적으로 게시되었습니다.\n");
+				System.out.println("정상적으로 게시되었습니다.");
+				System.out.println("----------------------------------------------------------------------------\n\n");
 			} else {
-				System.out.println("게시물 등록에 실패하였습니다\n");
+				System.out.println("게시물 등록에 실패하였습니다");
+				System.out.println("----------------------------------------------------------------------------\n\n");
 			}
 
 		} catch (SQLException e) {
@@ -200,9 +207,11 @@ public class NoticeboardDAO extends DAO{
 
 			int result = pstmt.executeUpdate();
 			if (result > 0) {
-				System.out.println("정상적으로 변경되었습니다.\n");
+				System.out.println("정상적으로 변경되었습니다.");
+				System.out.println("----------------------------------------------------------------------------\n\n");
 			} else {
-				System.out.println("변경에 실패하였습니다.\n");
+				System.out.println("변경에 실패하였습니다.");
+				System.out.println("----------------------------------------------------------------------------\n\n");
 			}
 
 		} catch (SQLException e) {
@@ -222,9 +231,11 @@ public class NoticeboardDAO extends DAO{
 			int result = stmt.executeUpdate(sql);
 			
 			if(result > 0) {
-				System.out.println("게시물이 삭제되었습니다\n");
+				System.out.println("댓글이 삭제되었습니다");
+				System.out.println("----------------------------------------------------------------------------\n\n");
 			} else {
-				System.out.println("게시물이 삭제되지않았습니다.\n");
+				System.out.println("댓글이 삭제되지않았습니다.");
+				System.out.println("----------------------------------------------------------------------------\n\n");
 			}
 			
 		}catch (SQLException e) {
@@ -264,7 +275,7 @@ public class NoticeboardDAO extends DAO{
 			connect();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("SELECT * FROM notice WHERE title LIKE " + "'%" + noticeboard.getTitle() + "%'");
-			if (rs.next()) {
+			while (rs.next()) {
 				noticeboard = new Noticeboard();
 				noticeboard.setNo(rs.getInt("no"));
 				noticeboard.setTitle(rs.getString("title"));

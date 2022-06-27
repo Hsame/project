@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.app.common.DAO;
-import com.yedam.app.free.Freeboardcomment;
-import com.yedam.app.noticeboard.Noticeboard;
 
-public class AnonymousboardDAO extends DAO{
-	
+public class AnonymousboardDAO extends DAO {
+
 	// 싱글톤
 	private static AnonymousboardDAO dao = null;
 
@@ -22,7 +20,7 @@ public class AnonymousboardDAO extends DAO{
 		}
 		return dao;
 	}
-	
+
 	public void insert(Anonymousboard anonymousboard) {
 
 		try {
@@ -70,7 +68,7 @@ public class AnonymousboardDAO extends DAO{
 			disconnect();
 		}
 	}
-	
+
 	public Anonymousboard selectOne(int no) {
 		Anonymousboard anonymousboard = null;
 		try {
@@ -79,8 +77,8 @@ public class AnonymousboardDAO extends DAO{
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				anonymousboard = new Anonymousboard();
 				anonymousboard.setNo(rs.getInt("no"));
 				anonymousboard.setTitle(rs.getString("title"));
@@ -88,37 +86,36 @@ public class AnonymousboardDAO extends DAO{
 				anonymousboard.setId(rs.getString("id"));
 				anonymousboard.setRegdate(rs.getString("regdate"));
 			}
-			
-		}catch(SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			disconnect();
 		}
 		return anonymousboard;
 	}
-	
+
 	public void delete(int no) {
 		try {
 			connect();
-			String sql = "DELETE FROM anonymous "
-					+ "WHERE no = "+ "'" + no + "'"; 
+			String sql = "DELETE FROM anonymous " + "WHERE no = " + "'" + no + "'";
 			stmt = conn.createStatement();
-			
+
 			int result = stmt.executeUpdate(sql);
-			
-			if(result > 0) {
+
+			if (result > 0) {
 				System.out.println("게시물이 삭제되었습니다");
 			} else {
 				System.out.println("게시물이 삭제되지않았습니다.");
 			}
-			
-		}catch (SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			disconnect();
 		}
 	}
-	
+
 	public List<Anonymousboard> selectAll() {
 		List<Anonymousboard> list = new ArrayList<>();
 		try {
@@ -131,7 +128,7 @@ public class AnonymousboardDAO extends DAO{
 				anonymousboard.setTitle(rs.getString("title"));
 				anonymousboard.setId(rs.getString("id"));
 				anonymousboard.setRegdate(rs.getString("regdate"));
-				
+
 				list.add(anonymousboard);
 			}
 		} catch (SQLException e) {
@@ -141,21 +138,22 @@ public class AnonymousboardDAO extends DAO{
 		}
 		return list;
 	}
-	
+
 	public List<Anonymousboard> searchboard(Anonymousboard anonymousboard) {
 		List<Anonymousboard> list = new ArrayList<>();
 		try {
 			connect();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM notice WHERE title LIKE " + "'%" + anonymousboard.getTitle() + "%'");
-			if (rs.next()) {
+			rs = stmt.executeQuery(
+					"SELECT * FROM anonymous WHERE title LIKE " + "'%" + anonymousboard.getTitle() + "%'");
+			while (rs.next()) {
 				anonymousboard = new Anonymousboard();
 				anonymousboard.setNo(rs.getInt("no"));
 				anonymousboard.setTitle(rs.getString("title"));
 				anonymousboard.setContent(rs.getString("content"));
 				anonymousboard.setId(rs.getString("id"));
 				anonymousboard.setRegdate(rs.getString("regdate"));
-				
+
 				list.add(anonymousboard);
 			}
 		} catch (SQLException e) {
@@ -165,7 +163,7 @@ public class AnonymousboardDAO extends DAO{
 		}
 		return list;
 	}
-	
+
 	public void insertcomment(Anonymousboardcomment anonymousboardcomment) {
 
 		try {
@@ -175,7 +173,7 @@ public class AnonymousboardDAO extends DAO{
 			pstmt.setString(2, anonymousboardcomment.getId());
 			pstmt.setString(1, anonymousboardcomment.getComment());
 			pstmt.setInt(3, anonymousboardcomment.getNo());
-			
+
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
@@ -190,7 +188,7 @@ public class AnonymousboardDAO extends DAO{
 			disconnect();
 		}
 	}
-	
+
 	public Anonymousboardcomment selectOnecomment(int no) {
 		Anonymousboardcomment anonymousboardcomment = null;
 		try {
@@ -198,16 +196,16 @@ public class AnonymousboardDAO extends DAO{
 			String sql = "SELECT * FROM comments WHERE nono = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, no);
-			rs = pstmt.executeQuery();		
-			if(rs.next()) {
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
 				anonymousboardcomment = new Anonymousboardcomment();
 				anonymousboardcomment.setNo(rs.getInt("no"));
 				anonymousboardcomment.setId(rs.getString("id"));
 				anonymousboardcomment.setNono(rs.getInt("nono"));
 				anonymousboardcomment.setComment(rs.getString("comm"));
 			}
-			
-		}catch(SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			disconnect();
@@ -236,43 +234,42 @@ public class AnonymousboardDAO extends DAO{
 			disconnect();
 		}
 	}
-	
+
 	public void deletecomment(int no) {
 		try {
 			connect();
-			String sql = "DELETE FROM comments "
-					+ "WHERE nono = "+ "'" + no + "'"; 
+			String sql = "DELETE FROM comments " + "WHERE nono = " + "'" + no + "'";
 			stmt = conn.createStatement();
-			
+
 			int result = stmt.executeUpdate(sql);
-			
-			if(result > 0) {
-				System.out.println("게시물이 삭제되었습니다\n");
+
+			if (result > 0) {
+				System.out.println("댓글이 삭제되었습니다\n");
 			} else {
-				System.out.println("게시물이 삭제되지않았습니다.\n");
+				System.out.println("댓글이 삭제되지않았습니다.\n");
 			}
-			
-		}catch (SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			disconnect();
 		}
 	}
-	
+
 	public List<Anonymousboardcomment> comment(int no) {
 		List<Anonymousboardcomment> list = new ArrayList<>();
 		try {
 			connect();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM comments WHERE no = " + "'" + no +"'");
+			rs = stmt.executeQuery("SELECT * FROM comments WHERE no = " + "'" + no + "'");
 			while (rs.next()) {
-				Anonymousboardcomment anonymousboardcomment = new Anonymousboardcomment();	
+				Anonymousboardcomment anonymousboardcomment = new Anonymousboardcomment();
 				anonymousboardcomment = new Anonymousboardcomment();
 				anonymousboardcomment.setNo(rs.getInt("no"));
 				anonymousboardcomment.setId(rs.getString("id"));
 				anonymousboardcomment.setNono(rs.getInt("nono"));
 				anonymousboardcomment.setComment(rs.getString("comm"));
-				
+
 				list.add(anonymousboardcomment);
 			}
 		} catch (SQLException e) {
@@ -282,6 +279,5 @@ public class AnonymousboardDAO extends DAO{
 		}
 		return list;
 	}
-
 
 }

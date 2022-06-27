@@ -44,29 +44,52 @@ public class ProfileDAO extends DAO {
 		return list;
 	}
 
-	public Member selectOne(String memberId) {
-		Member member = null;
+//	public Member selectOne(String memberId) {
+//		Member member = null;
+//		try {
+//			connect();
+//			String sql = "SELECT * FROM members WHERE member_role = ?";
+//			pstmt = conn.prepareStatement(sql);
+//			pstmt.setString(1, memberId);
+//
+//			rs = pstmt.executeQuery();
+//
+//			while (rs.next()) {
+//				member = new Member();
+//				member.setMemberId(rs.getString("member_id"));
+//				member.setMemberPassword(rs.getString("member_passwd"));
+//				member.setMemberRole(rs.getInt("member_role"));
+//			}
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			disconnect();
+//		}
+//		return member;
+//	}
+	
+	public List<Member> selectOne(Member member) {
+		List<Member> list = new ArrayList<>();
 		try {
 			connect();
-			String sql = "SELECT * FROM members WHERE member_id = ?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, memberId);
-
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				member = new Member();
-				member.setMemberId(rs.getString("member_id"));
-				member.setMemberPassword(rs.getString("member_passwd"));
-				member.setMemberRole(rs.getInt("member_role"));
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM members WHERE member_role =" + member.getMemberRole());
+			
+			while (rs.next()) {
+			member = new Member();
+			member.setMemberId(rs.getString("member_id"));
+			member.setMemberPassword(rs.getString("member_passwd"));
+			member.setMemberRole(rs.getInt("member_role"));
+				
+				list.add(member);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			disconnect();
 		}
-		return member;
+		return list;
 	}
 
 	public void chprofile(Member member) {
@@ -76,13 +99,14 @@ public class ProfileDAO extends DAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberPassword());
 			pstmt.setString(2, member.getMemberId());
-
+			
 			int result = pstmt.executeUpdate();
-			if (result > 0) {
-				System.out.println("정상적으로 변경되었습니다.");
-			} else {
-				System.out.println("변경이 실패하였습니다.");
-			}
+			
+				if (result > 0) {
+					System.out.println("정상적으로 변경되었습니다.");
+				} else {
+					System.out.println("변경이 실패하였습니다.");
+				}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -90,23 +114,22 @@ public class ProfileDAO extends DAO {
 			disconnect();
 		}
 	}
-	
-	public void delete(String memberId) {
+
+	public void delete(String memberrole) {
 		try {
 			connect();
-			String sql = "DELETE FROM members "
-					+ "WHERE member_id = "+ "'" + memberId + "'"; 
+			String sql = "DELETE FROM members " + "WHERE member_id = " + "'" + memberrole + "'";
 			stmt = conn.createStatement();
-			
+
 			int result = stmt.executeUpdate(sql);
-			
-			if(result > 0) {
+
+			if (result > 0) {
 				System.out.println("회원정보가 삭제되었습니다");
 			} else {
-				System.out.println("회원정보가 삭제되지않았습니다.");
+				System.out.println("등록된 회원정보가 없습니다.");
 			}
-			
-		}catch (SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			disconnect();

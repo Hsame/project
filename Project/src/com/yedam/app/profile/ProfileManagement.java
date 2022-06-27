@@ -25,7 +25,7 @@ public class ProfileManagement extends Management {
 			} else if (menuNo == 4) {
 				// 회원 정보 삭제
 				deletemember();
-			} else if (menuNo == 5){ 
+			} else if (menuNo == 5) {
 				back();
 				break;
 			} else {
@@ -45,51 +45,69 @@ public class ProfileManagement extends Management {
 
 	private void memberAll() {
 		List<Member> list = pDAO.selectAll();
-		for (Member book : list) {
-			System.out.println(book);
+		for (Member member : list) {
+			System.out.println(member);
 		}
 	}
 
 	private void memberSelect() {
-		String memberId = inputmemberid();
-		// DB 검색
-		Member member = pDAO.selectOne(memberId);
-		// 결과 출력
-		if (member != null) {
+		Member info = new Member();
+		System.out.print("0 : 관리자 1 : 일반회원 3 : 종료> ");
+		info.setMemberRole(Integer.parseInt(sc.nextLine()));
+		if (info.getMemberRole() == 3) {
+			System.out.println("이전으로 돌아갑니다");
+			System.out.println("----------------------------------------------------------------------------\n\n");
+			return;
+		}
+		List<Member> list = pDAO.selectOne(info);
+		for (Member member : list) {
 			System.out.println(member);
-		} else {
-			System.out.println("원하는 정보가 존재하지 않습니다");
 		}
 	}
 
 	private String inputmemberid() {
-		System.out.print("회원 아이디 > ");
+		System.out.print("회원 아이디 입력(0을 입력시 종료) > ");
 		return sc.nextLine();
 	}
 
 	private void changePasswd() {
 		// 수정정보 입력
-		Member member = inputUpdateInfo();
+		Member member = new Member();
+		System.out.print("아이디(0을 입력시 종료) > ");
+		member.setMemberId(sc.nextLine());
+		if (member.getMemberId().equals("0")) {
+			return;
+		}
+		if (member.getMemberId() == null || member.getMemberId().trim().length() == 0) {
+			System.out.println("제대로 입력해주세요!");
+			System.out.println("----------------------------------------------------------------------------\n\n");
+			return;
+		}
+		System.out.print("변경할 비밀번호(0을 입력시 종료) > ");
+		member.setMemberPassword(sc.nextLine());
+		if (member.getMemberPassword().equals("0")) {
+			return;
+		}
+		if (member.getMemberPassword() == null || member.getMemberPassword().trim().length() == 0) {
+			System.out.println("제대로 입력해주세요!");
+			System.out.println("----------------------------------------------------------------------------\n\n");
+			return;
+		}
 		// DB 전달
 		pDAO.chprofile(member);
-	}
-
-	private Member inputUpdateInfo() {
-		Member member = new Member();
-		System.out.println("아이디 > ");
-		member.setMemberId(sc.nextLine());
-		System.out.println("변경할 비밀번호 > ");
-		member.setMemberPassword(sc.nextLine());
-		return member;
 	}
 
 	private void deletemember() {
 		// 수정정보 입력
 		String member = inputmemberid();
-		// DB 전달
-		pDAO.delete(member);
+		if (member.equals("0")) {
+			return;
+		} else {
+			// DB 전달
+			pDAO.delete(member);
+		}
 	}
-	
+
 	private void back() {
 		System.out.println("이전 메뉴로 돌아갑니다");
 	}

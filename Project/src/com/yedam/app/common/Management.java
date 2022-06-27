@@ -42,12 +42,22 @@ public class Management {
 		}
 	}
 	
+	protected boolean selectRole() {
+		int memberRole = LoginControl.getLoginInfo().getMemberRole();
+		if (memberRole == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	protected void menuPrint(boolean role) {
 		String menu = "";
 		if(role) {
-			menu += "   0.회원정보 열람  ::";
+			menu = "   0.회원정보 열람  ::   1.공지사항  ::  2.자유게시판  ::  3.익명게시판  ::  9.종료";
+		} else {
+		menu = "            1.공지사항  ::  2.자유게시판  ::  3.익명게시판  ::  9.종료";
 		}
-		menu += "   1.공지사항  ::  2.자유게시판  ::  3.익명게시판  ::  9.종료";
 		System.out.println("============================================================================");
 		System.out.println();
 		System.out.println(menu);
@@ -60,7 +70,7 @@ public class Management {
 		try {
 			menuNo = Integer.parseInt(sc.nextLine());
 		} catch (NumberFormatException e) {
-			System.out.println("숫자를 입력해주시기 바랍니다.");
+			System.out.println("숫자만 입력해주세요!!");
 		}
 		return menuNo;
 	}
@@ -73,14 +83,7 @@ public class Management {
 		System.out.println("메뉴에서 입력해주시기 바랍니다.");
 	}
 	
-	protected boolean selectRole() {
-		int memberRole = LoginControl.getLoginInfo().getMemberRole();
-		if (memberRole == 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+
 
 	
 }

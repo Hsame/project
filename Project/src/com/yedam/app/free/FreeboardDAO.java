@@ -99,7 +99,7 @@ public class FreeboardDAO extends DAO {
 			connect();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("SELECT * FROM free WHERE title LIKE " + "'%" + freeboard.getTitle() + "%'");
-			if (rs.next()) {
+			while (rs.next()) {
 				freeboard = new Freeboard();
 				freeboard.setNo(rs.getInt("no"));
 				freeboard.setTitle(rs.getString("title"));
@@ -241,9 +241,9 @@ public class FreeboardDAO extends DAO {
 			int result = stmt.executeUpdate(sql);
 
 			if (result > 0) {
-				System.out.println("게시물이 삭제되었습니다\n");
+				System.out.println("댓글이 삭제되었습니다\n");
 			} else {
-				System.out.println("게시물이 삭제되지않았습니다.\n");
+				System.out.println("댓글이 삭제되지않았습니다.\n");
 			}
 
 		} catch (SQLException e) {

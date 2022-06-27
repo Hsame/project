@@ -64,25 +64,50 @@ public class LoginControl {
 	}
 
 	private void login() {
-		Member inputInfo = inputMember();
-		loginInfo = MembersDAO.getInstance().selectOne(inputInfo);
+		Member info = new Member();
+		System.out.print("아이디 (0을 입력하면 종료)> ");
+		info.setMemberId(sc.nextLine());
+		if(info.getMemberId().equals("0")) {
+			System.out.println("이전으로 돌아갑니다 \n\n");
+			return;
+		}
+		if (info.getMemberId() == null || info.getMemberId().trim().length() == 0) {
+			System.out.println("제대로 입력해주세요!");
+			System.out.println("----------------------------------------------------------------------------\n\n");
+			return;
+		}
+		System.out.print("비밀번호 (0을 입력하면 종료)> ");
+		info.setMemberPassword(sc.nextLine());
+		if(info.getMemberPassword().equals("0")) {
+			System.out.println("이전으로 돌아갑니다 \n\n");
+			return;
+		}
+		if (info.getMemberPassword() == null || info.getMemberPassword().trim().length() == 0) {
+			System.out.println("제대로 입력해주세요!");
+			System.out.println("----------------------------------------------------------------------------\n\n");
+			return;
+		}
+		loginInfo = MembersDAO.getInstance().selectOne(info);
 		if (loginInfo == null)
 			return;
 		new Management().run(loginInfo);
 	}
 
-	private Member inputMember() {
-		Member info = new Member();
-			System.out.print("아이디 > ");
-			info.setMemberId(sc.nextLine());
-			System.out.print("비밀번호 > ");
-			info.setMemberPassword(sc.nextLine());
-		return info;
-	}
-
 	private void signup() {
-		Member member = inputMember();
+		Member info = new Member();
+		System.out.print("아이디 (0을 입력하면 종료)> ");
+		info.setMemberId(sc.nextLine());
+		if(info.getMemberId().equals("0")) {
+			System.out.println("이전으로 돌아갑니다 \n\n");
+			return;
+		}
+		System.out.print("비밀번호 (0을 입력하면 종료)> ");
+		info.setMemberPassword(sc.nextLine());
+		if(info.getMemberPassword().equals("0")) {
+			System.out.println("이전으로 돌아갑니다\n\n");
+			return;
+		}
 		// DB에 저장
-		mDAO.insert(member);
+		mDAO.insert(info);
 	}
 }
