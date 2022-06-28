@@ -43,31 +43,6 @@ public class ProfileDAO extends DAO {
 		}
 		return list;
 	}
-
-//	public Member selectOne(String memberId) {
-//		Member member = null;
-//		try {
-//			connect();
-//			String sql = "SELECT * FROM members WHERE member_role = ?";
-//			pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, memberId);
-//
-//			rs = pstmt.executeQuery();
-//
-//			while (rs.next()) {
-//				member = new Member();
-//				member.setMemberId(rs.getString("member_id"));
-//				member.setMemberPassword(rs.getString("member_passwd"));
-//				member.setMemberRole(rs.getInt("member_role"));
-//			}
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			disconnect();
-//		}
-//		return member;
-//	}
 	
 	public List<Member> selectOne(Member member) {
 		List<Member> list = new ArrayList<>();

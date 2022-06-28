@@ -116,6 +116,52 @@ public class FreeboardDAO extends DAO {
 		}
 		return list;
 	}
+	
+	public List<Freeboard> five() {
+		List<Freeboard> list = new ArrayList<>();
+		try {
+			connect();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM free WHERE ROWNUM < 6");
+			while (rs.next()) {
+				Freeboard freeboard = new Freeboard();
+				freeboard.setNo(rs.getInt("no"));
+				freeboard.setTitle(rs.getString("title"));
+				freeboard.setId(rs.getString("id"));
+				freeboard.setRegdate(rs.getString("regdate"));
+
+				list.add(freeboard);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
+	
+	public List<Freeboard> next(int firstPage, int lastPage) {
+		List<Freeboard> list = new ArrayList<>();
+		try {
+			connect();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM (SELECT ROWNUM num, no,title,content,id,regdate FROM FREE) WHERE num BETWEEN " + firstPage+" and "+lastPage);
+			while (rs.next()) {
+				Freeboard freeboard = new Freeboard();
+				freeboard.setNo(rs.getInt("no"));
+				freeboard.setTitle(rs.getString("title"));
+				freeboard.setId(rs.getString("id"));
+				freeboard.setRegdate(rs.getString("regdate"));
+
+				list.add(freeboard);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
 
 	public void delete(int no) {
 		try {
@@ -143,7 +189,7 @@ public class FreeboardDAO extends DAO {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM free");
+			rs = stmt.executeQuery("SELECT * FROM free ORDER BY ROWNUM");
 			while (rs.next()) {
 				Freeboard freeboard = new Freeboard();
 				freeboard.setNo(rs.getInt("no"));

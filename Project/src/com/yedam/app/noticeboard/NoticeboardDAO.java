@@ -292,6 +292,29 @@ public class NoticeboardDAO extends DAO{
 		}
 		return list;
 	}
+	
+	public List<Noticeboard> next(int firstPage, int lastPage) {
+		List<Noticeboard> list = new ArrayList<>();
+		try {
+			connect();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM (SELECT ROWNUM num, no,title,content,id,regdate FROM notice) WHERE num BETWEEN " + firstPage+" and "+lastPage);
+			while (rs.next()) {
+				Noticeboard noticeboard = new Noticeboard();
+				noticeboard.setNo(rs.getInt("no"));
+				noticeboard.setTitle(rs.getString("title"));
+				noticeboard.setId(rs.getString("id"));
+				noticeboard.setRegdate(rs.getString("regdate"));
+
+				list.add(noticeboard);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
 
 
 }

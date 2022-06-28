@@ -1,6 +1,8 @@
 package com.yedam.app.member;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.yedam.app.common.DAO;
 
@@ -72,6 +74,25 @@ public class MembersDAO extends DAO {
 		} finally {
 			disconnect();
 		}
+	}
+	public List<Member> selectAll() {
+		List<Member> list = new ArrayList<>();
+		try {
+			connect();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM members");
+			while (rs.next()) {
+				Member members = new Member();
+				members.setMemberId("member_id");
+				
+				list.add(members);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
 	}
 
 }

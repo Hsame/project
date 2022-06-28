@@ -6,18 +6,21 @@ import com.yedam.app.common.Management;
 import com.yedam.app.member.Member;
 
 public class FreeboardManagement extends Management {
-
 	protected FreeboardDAO fDAO = FreeboardDAO.getInstance();
 	private Member linfo;
 
 	public FreeboardManagement(Member loginInfo) {
+		int a = 1;
+		int b = 5;
+		int c = 1;
 		linfo = loginInfo;
 		boolean role = selectRole();
 		while (true) {
-			System.out.println("   번호              제목                 게시자                     작성일자");
+			System.out.println("   번호                제목                게시자                   작성일자");
 			System.out.println("----------------------------------------------------------------------------");
-			boardAll();
-			System.out.println("\n\n\n");
+			next(a, b);
+			System.out.println("\n\t\t\t\t\t" + c + "/" + pageAll());
+			// 페이징
 			menuPrint(role);
 			System.out.print("메뉴 선택 > ");
 			int menuNo = menuSelect();
@@ -37,6 +40,22 @@ public class FreeboardManagement extends Management {
 				// 글검색 --글 제목으로 검색
 				search();
 			} else if (menuNo == 6) {
+				if (c < pageAll()) {
+					a += 5;
+					b += 5;
+					c++;
+					} else {
+						System.out.println("다음 페이지가 없습니다");
+					}
+			} else if (menuNo == 7) {
+				if (c > 1) {
+				a -= 5;
+				b -= 5;
+				c--;
+				} else {
+					System.out.println("이전 페이지가 없습니다");
+				}
+			} else if (menuNo == 8) {
 				// 뒤로가기
 				back();
 				break;
@@ -50,9 +69,10 @@ public class FreeboardManagement extends Management {
 	protected void menuPrint(boolean role) {
 		System.out.println("============================================================================");
 		System.out.println();
-		System.out.println(" 1.글 조회  ::  2.글 작성  ::  3.글 수정  ::  4.글 삭제  ::  5. 글 검색  ::  6.뒤로가기");
+		System.out.println("         1.글 조회  ::  2.글 작성  ::  3.글 수정  ::  4.글 삭제  ::  5. 글 검색\n\n"
+				+ "              6. 다음 페이지  ::  7. 이전 페이지  ::  8. 뒤로가기");
 		System.out.println();
-		System.out.println("============================================================================\n");
+		System.out.println("============================================================================");
 	}
 
 	private void create(Member loginInfo) {
@@ -147,7 +167,8 @@ public class FreeboardManagement extends Management {
 					}
 				} else {
 					System.out.println("번호를 다시 확인해주세요");
-					System.out.println("----------------------------------------------------------------------------\n\n");
+					System.out.println(
+							"----------------------------------------------------------------------------\n\n");
 					break;
 				}
 			}
@@ -192,11 +213,24 @@ public class FreeboardManagement extends Management {
 		}
 	}
 
-	private void boardAll() {
-		List<Freeboard> list = fDAO.selectAll();
-		for (Freeboard freeboard : list) {
-			System.out.println(freeboard);
+	private void next(int firstPage, int lastPage) {
+		List<Freeboard> list = fDAO.next(firstPage, lastPage);
+		if (list.size() != 0) {
+			for (Freeboard freeboard : list) {
+				System.out.println(freeboard);
+			}
+		} else { 
+			System.out.println("정보가 없습니다!");
 		}
+	}
+
+	private int pageAll() {
+		List<Freeboard> list = fDAO.selectAll();
+		int page = list.size() / 5;
+		if (list.size() % 5 != 0) {
+			page += 1;
+		}
+		return page;
 	}
 
 	private void search() {
@@ -328,5 +362,4 @@ public class FreeboardManagement extends Management {
 			System.out.println(freeboardcomment);
 		}
 	}
-
 }

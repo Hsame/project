@@ -11,13 +11,16 @@ public class NoticeboardManagement extends Management {
 	private Member linfo;
 
 	public NoticeboardManagement(Member loginInfo) {
+		int a = 1;
+		int b = 5;
+		int c = 1;
 		linfo = loginInfo;
 		boolean role = selectRole();
 		while (true) {
-			System.out.println("   번호              제목                 게시자                     작성일자");
+			System.out.println("   번호              제목                    게시자                   작성일자");
 			System.out.println("----------------------------------------------------------------------------");
-			boardAll();
-			System.out.println("\n\n\n");
+			next(a, b);
+			System.out.println("\n\t\t\t\t\t" + c + "/" + pageAll());
 			menuPrint(role);
 			System.out.print("메뉴 선택 > ");
 			int menuNo = menuSelect();
@@ -37,26 +40,59 @@ public class NoticeboardManagement extends Management {
 				} else if (menuNo == 5) {
 					search();
 				} else if (menuNo == 6) {
+					if (c < pageAll()) {
+					a += 5;
+					b += 5;
+					c++;
+					} else {
+						System.out.println("다음 페이지가 없습니다");
+					}
+				} else if (menuNo == 7) {
+					// 뒤로가기
+					if (c > 1) {
+					a -= 5;
+					b -= 5;
+					c--;
+					} else {
+						System.out.println("이전 페이지가 없습니다");
+					}
+				} else if (menuNo == 8) {
 					// 뒤로가기
 					back();
 					break;
 				} else {
 					showInputError();
 				}
-			}
-			if (!role) {
-				if (menuNo == 1) {
-					// 글 조회 -- 번호로(no)
-					boardSelect();
-				} else if (menuNo == 2) {
-					// 글 작성
-					search();
-				} else if (menuNo == 3) {
-					// 뒤로가기
-					back();
-					break;
-				} else {
-					showInputError();
+				if (!role) {
+					if (menuNo == 1) {
+						// 글 조회 -- 번호로(no)
+						boardSelect();
+					} else if (menuNo == 2) {
+						// 글 작성
+						search();
+					} else if (menuNo == 3) {
+						if (c < pageAll()) {
+							a += 5;
+							b += 5;
+							c++;
+							} else {
+								System.out.println("다음 페이지가 없습니다");
+							}
+					} else if (menuNo == 4) {
+						if (c > 1) {
+						a -= 5;
+						b -= 5;
+						c--;
+						} else {
+							System.out.println("이전 페이지가 없습니다");
+						}
+					} else if (menuNo == 5) {
+						// 뒤로가기
+						back();
+						break;
+					} else {
+						showInputError();
+					}
 				}
 			}
 		}
@@ -66,9 +102,10 @@ public class NoticeboardManagement extends Management {
 	protected void menuPrint(boolean role) {
 		String menu = "";
 		if (role) {
-			menu = "1.글 조회  ::  2.글 작성  ::  3.글 수정  ::  4.글 삭제  ::  5. 글 검색  ::  6. 뒤로가기";
+			menu = "      1.글 조회  ::  2.글 작성  ::  3.글 수정  ::  4.글 삭제  ::  5. 글 검색\n\n"
+					+ "              6. 다음 페이지  ::  7. 이전 페이지  ::  8. 뒤로가기";
 		} else {
-			menu = "                    1.글 조회  ::  2. 글 검색  ::  3. 뒤로가기                     ";
+			menu = "   1.글 조회  ::  2. 글 검색  ::  3. 다음 페이지  ::  4. 이전페이지  ::  5.뒤로가기  ";
 		}
 		System.out.println("============================================================================");
 		System.out.println("");
@@ -125,14 +162,14 @@ public class NoticeboardManagement extends Management {
 	private void update(Member loginInfo) {
 		Noticeboard info = new Noticeboard();
 		try {
-		System.out.print("어떤 게시물을 수정? (0 입력시 종료)> ");
-		info.setNo(Integer.parseInt(sc.nextLine()));
-		if (info.getNo() == 0) {
-			System.out.println("이전으로 돌아갑니다.");
-			System.out.println("----------------------------------------------------------------------------\n\n");
-			return;
-		}
-		}catch (NumberFormatException e) {
+			System.out.print("어떤 게시물을 수정? (0 입력시 종료)> ");
+			info.setNo(Integer.parseInt(sc.nextLine()));
+			if (info.getNo() == 0) {
+				System.out.println("숫자만 입력해주세요!!");
+				System.out.println("----------------------------------------------------------------------------\n\n");
+				return;
+			}
+		} catch (NumberFormatException e) {
 			System.out.println("숫자만 입력해주세요!!");
 			System.out.println("----------------------------------------------------------------------------\n\n");
 		}
@@ -160,46 +197,47 @@ public class NoticeboardManagement extends Management {
 
 	private void boardSelect() {
 		try {
-		int no = inputboardno();
-		if (no == 0) {
-			System.out.println("이전으로 돌아갑니다.");
-			System.out.println("----------------------------------------------------------------------------\n\n");
-			return;
-		}
-		Noticeboard noticeboard = nDAO.selectOne(no);
-		while (true) {
-			if (noticeboard != null) {
-				System.out.println("작성자 : " + noticeboard.getId());
-				System.out.println("작성일자 : " + noticeboard.getRegdate());
-				System.out.println("제목 : " + noticeboard.getTitle());
-				System.out.println("내용 : " + noticeboard.getContent() + "\n\n");
-
-				System.out.println("댓글");
-				comment(no);
-				commentPrint();
-				int menuNo = menuSelect();
-				if (menuNo == 1) {
-					// 1. 댓글 입력
-					createcomment(no, linfo);
-				} else if (menuNo == 2) {
-					// 2. 댓글 수정
-					updatecomment(linfo);
-				} else if (menuNo == 3) {
-					// 3. 댓글 삭제
-					deletecomment(linfo);
-				} else if (menuNo == 4) {
-					backboard();
-					break;
-				} else {
-					showInputError();
-				}
-			} else {
-				System.out.println("번호를 다시 확인해주세요");
+			int no = inputboardno();
+			if (no == 0) {
+				System.out.println("이전으로 돌아갑니다.");
 				System.out.println("----------------------------------------------------------------------------\n\n");
-				break;
+				return;
 			}
-		}
-		}catch (NumberFormatException e) {
+			Noticeboard noticeboard = nDAO.selectOne(no);
+			while (true) {
+				if (noticeboard != null) {
+					System.out.println("작성자 : " + noticeboard.getId());
+					System.out.println("작성일자 : " + noticeboard.getRegdate());
+					System.out.println("제목 : " + noticeboard.getTitle());
+					System.out.println("내용 : " + noticeboard.getContent() + "\n\n");
+
+					System.out.println("댓글");
+					comment(no);
+					commentPrint();
+					int menuNo = menuSelect();
+					if (menuNo == 1) {
+						// 1. 댓글 입력
+						createcomment(no, linfo);
+					} else if (menuNo == 2) {
+						// 2. 댓글 수정
+						updatecomment(linfo);
+					} else if (menuNo == 3) {
+						// 3. 댓글 삭제
+						deletecomment(linfo);
+					} else if (menuNo == 4) {
+						backboard();
+						break;
+					} else {
+						showInputError();
+					}
+				} else {
+					System.out.println("번호를 다시 확인해주세요");
+					System.out.println(
+							"----------------------------------------------------------------------------\n\n");
+					break;
+				}
+			}
+		} catch (NumberFormatException e) {
 			System.out.println("숫자만 입력해주세요!!");
 			System.out.println("----------------------------------------------------------------------------\n\n");
 		}
@@ -220,33 +258,26 @@ public class NoticeboardManagement extends Management {
 		// 수정정보 입력
 		Noticeboard info = new Noticeboard();
 		try {
-		System.out.print("삭제할 게시물을 선택해주세요 (0 입력시 종료)> ");
-		info.setNo(Integer.parseInt(sc.nextLine()));
-		if (info.getNo() == 0) {
-			System.out.println("이전으로 돌아갑니다.");
-			System.out.println("----------------------------------------------------------------------------\n\n");
-			return;
-		}
-		int no = info.getNo();
-		Noticeboard f1 = nDAO.selectOne(no);
+			System.out.print("삭제할 게시물을 선택해주세요 (0 입력시 종료)> ");
+			info.setNo(Integer.parseInt(sc.nextLine()));
+			if (info.getNo() == 0 || info.getNo() < 0) {
+				System.out.println("이전으로 돌아갑니다.");
+				System.out.println("----------------------------------------------------------------------------\n\n");
+				return;
+			}
+			int no = info.getNo();
+			Noticeboard f1 = nDAO.selectOne(no);
 
-		// DB 전달
-		if (linfo.getMemberId().equals(f1.getId()) || linfo.getMemberId().equals("admin")) {
-			nDAO.delete(no);
-		} else {
-			System.out.println("삭제에 실패하였습니다");
-			System.out.println("----------------------------------------------------------------------------\n\n");
-		}
-		}catch (NumberFormatException e) {
+			// DB 전달
+			if (linfo.getMemberId().equals(f1.getId()) || linfo.getMemberId().equals("admin")) {
+				nDAO.delete(no);
+			} else {
+				System.out.println("삭제에 실패하였습니다");
+				System.out.println("----------------------------------------------------------------------------\n\n");
+			}
+		} catch (NumberFormatException e) {
 			System.out.println("숫자만 입력해주세요!!");
 			System.out.println("----------------------------------------------------------------------------\n\n");
-		}
-	}
-
-	private void boardAll() {
-		List<Noticeboard> list = nDAO.selectAll();
-		for (Noticeboard noticeboard : list) {
-			System.out.println(noticeboard);
 		}
 	}
 
@@ -281,8 +312,12 @@ public class NoticeboardManagement extends Management {
 	private void updatecomment(Member loginInfo) {
 		Noticeboardcomment info = new Noticeboardcomment();
 		try {
-		System.out.print("어떤 댓글을 수정? > ");
-		info.setNono(Integer.parseInt(sc.nextLine()));
+			System.out.print("어떤 댓글을 수정? > ");
+			info.setNono(Integer.parseInt(sc.nextLine()));
+			if (info.getNono() < 0) {
+				System.out.println("숫자를 입력해주세요!!");
+				System.out.println("----------------------------------------------------------------------------\n\n");
+			}
 		} catch (NumberFormatException e) {
 			System.out.println("숫자를 입력해주세요!!");
 			System.out.println("----------------------------------------------------------------------------\n\n");
@@ -312,8 +347,12 @@ public class NoticeboardManagement extends Management {
 	private Noticeboardcomment inputdelcomment(Member loginInfo) {
 		Noticeboardcomment info = new Noticeboardcomment();
 		try {
-		System.out.print("삭제할 댓글을 선택해주세요 > ");
-		info.setNono(Integer.parseInt(sc.nextLine()));
+			System.out.print("삭제할 댓글을 선택해주세요 > ");
+			info.setNono(Integer.parseInt(sc.nextLine()));
+			if (info.getNono() < 0) {
+				System.out.println("숫자를 입력해주세요!!");
+				System.out.println("----------------------------------------------------------------------------\n\n");
+			}
 		} catch (NumberFormatException e) {
 			System.out.println("숫자를 입력해주세요");
 			System.out.println("----------------------------------------------------------------------------\n\n");
@@ -341,6 +380,22 @@ public class NoticeboardManagement extends Management {
 		for (Noticeboardcomment noticeboardcomment : list) {
 			System.out.println(noticeboardcomment);
 		}
+	}
+
+	private void next(int firstPage, int lastPage) {
+		List<Noticeboard> list = nDAO.next(firstPage, lastPage);
+		for (Noticeboard noticeboard : list) {
+			System.out.println(noticeboard);
+		}
+	}
+
+	private int pageAll() {
+		List<Noticeboard> list = nDAO.selectAll();
+		int page = list.size() / 5;
+		if (list.size() % 5 != 0) {
+			page += 1;
+		}
+		return page;
 	}
 
 }

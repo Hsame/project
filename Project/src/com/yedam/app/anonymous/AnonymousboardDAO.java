@@ -279,5 +279,28 @@ public class AnonymousboardDAO extends DAO {
 		}
 		return list;
 	}
+	
+	public List<Anonymousboard> next(int firstPage, int lastPage) {
+		List<Anonymousboard> list = new ArrayList<>();
+		try {
+			connect();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM (SELECT ROWNUM num, no,title,content,id,regdate FROM anonymous) WHERE num BETWEEN " + firstPage+" and "+lastPage);
+			while (rs.next()) {
+				Anonymousboard anonymous = new Anonymousboard();
+				anonymous.setNo(rs.getInt("no"));
+				anonymous.setTitle(rs.getString("title"));
+				anonymous.setId(rs.getString("id"));
+				anonymous.setRegdate(rs.getString("regdate"));
+
+				list.add(anonymous);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
 
 }

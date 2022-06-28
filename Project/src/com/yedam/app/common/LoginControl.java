@@ -1,9 +1,11 @@
 package com.yedam.app.common;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.yedam.app.member.Member;
 import com.yedam.app.member.MembersDAO;
+import com.yedam.app.noticeboard.Noticeboard;
 
 public class LoginControl {
 	Scanner sc = new Scanner(System.in);
@@ -64,10 +66,11 @@ public class LoginControl {
 	}
 
 	private void login() {
+		List<Member> list = mDAO.selectAll();
 		Member info = new Member();
 		System.out.print("아이디 (0을 입력하면 종료)> ");
 		info.setMemberId(sc.nextLine());
-		if(info.getMemberId().equals("0")) {
+		if (info.getMemberId().equals("0")) {
 			System.out.println("이전으로 돌아갑니다 \n\n");
 			return;
 		}
@@ -78,7 +81,7 @@ public class LoginControl {
 		}
 		System.out.print("비밀번호 (0을 입력하면 종료)> ");
 		info.setMemberPassword(sc.nextLine());
-		if(info.getMemberPassword().equals("0")) {
+		if (info.getMemberPassword().equals("0")) {
 			System.out.println("이전으로 돌아갑니다 \n\n");
 			return;
 		}
@@ -95,19 +98,32 @@ public class LoginControl {
 
 	private void signup() {
 		Member info = new Member();
-		System.out.print("아이디 (0을 입력하면 종료)> ");
-		info.setMemberId(sc.nextLine());
-		if(info.getMemberId().equals("0")) {
-			System.out.println("이전으로 돌아갑니다 \n\n");
-			return;
+			System.out.print("아이디 (0을 입력하면 종료)> ");
+			info.setMemberId(sc.nextLine());
+			if (info.getMemberId().equals("0")) {
+				System.out.println("이전으로 돌아갑니다.");
+				System.out.println("----------------------------------------------------------------------------\n\n");
+				return;
+			}
+			if (info.getMemberId() == null || info.getMemberId().trim().length() == 0) {
+				System.out.println("제대로 입력해주세요!");
+				System.out.println("----------------------------------------------------------------------------\n\n");
+				return;
+			}
+
+			System.out.print("비밀번호 (0을 입력하면 종료)> ");
+			info.setMemberPassword(sc.nextLine());
+			if (info.getMemberPassword().equals("0")) {
+				System.out.println("이전으로 돌아갑니다\n\n");
+				return;
+			}
+			if (info.getMemberId() == null || info.getMemberId().trim().length() == 0) {
+				System.out.println("제대로 입력해주세요!");
+				System.out.println("----------------------------------------------------------------------------\n\n");
+				return;
+			}
+			// DB에 저장
+			mDAO.insert(info);
 		}
-		System.out.print("비밀번호 (0을 입력하면 종료)> ");
-		info.setMemberPassword(sc.nextLine());
-		if(info.getMemberPassword().equals("0")) {
-			System.out.println("이전으로 돌아갑니다\n\n");
-			return;
-		}
-		// DB에 저장
-		mDAO.insert(info);
+	
 	}
-}

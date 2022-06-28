@@ -52,6 +52,7 @@ public class ProfileManagement extends Management {
 
 	private void memberSelect() {
 		Member info = new Member();
+		try {
 		System.out.print("0 : 관리자 1 : 일반회원 3 : 종료> ");
 		info.setMemberRole(Integer.parseInt(sc.nextLine()));
 		if (info.getMemberRole() == 3) {
@@ -62,6 +63,10 @@ public class ProfileManagement extends Management {
 		List<Member> list = pDAO.selectOne(info);
 		for (Member member : list) {
 			System.out.println(member);
+		}
+		}catch (NumberFormatException e) {
+			System.out.println("숫자만 입력해주세요!!");
+			System.out.println("----------------------------------------------------------------------------\n\n");
 		}
 	}
 
