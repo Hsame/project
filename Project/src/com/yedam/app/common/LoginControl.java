@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import com.yedam.app.member.Member;
 import com.yedam.app.member.MembersDAO;
-import com.yedam.app.noticeboard.Noticeboard;
 
 public class LoginControl {
 	Scanner sc = new Scanner(System.in);
@@ -64,12 +63,29 @@ public class LoginControl {
 	private void showInputError() {
 		System.out.println("메뉴를 확인해주세요");
 	}
-
-	private void login() {
+	
+	private Member equal(String id) {
 		List<Member> list = mDAO.selectAll();
+		for (Member member : list) {
+			if(member.getMemberId().equals(id)) {
+				return member;
+			}
+		}
+		return null;
+	}
+
+	
+    private boolean idCheck(String id) {
+        boolean check = true;
+        Member member = equal(id);
+        if(member == null)
+            check = false;
+        return check;
+    }
+	private void login() {
 		Member info = new Member();
 		System.out.print("아이디 (0을 입력하면 종료)> ");
-		info.setMemberId(sc.nextLine());
+		info.setMemberId(sc.nextLine());	
 		if (info.getMemberId().equals("0")) {
 			System.out.println("이전으로 돌아갑니다 \n\n");
 			return;
@@ -100,6 +116,10 @@ public class LoginControl {
 		Member info = new Member();
 			System.out.print("아이디 (0을 입력하면 종료)> ");
 			info.setMemberId(sc.nextLine());
+	        if(idCheck(info.getMemberId())) {
+	            System.out.println("중복된 ID입니다.");
+	            return;
+	        }
 			if (info.getMemberId().equals("0")) {
 				System.out.println("이전으로 돌아갑니다.");
 				System.out.println("----------------------------------------------------------------------------\n\n");
