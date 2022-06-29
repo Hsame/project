@@ -11,13 +11,13 @@ public class AnonymousboardManagement extends Management {
 	private Member linfo;
 
 	public AnonymousboardManagement(Member loginInfo) {
+		int a = 1;
+		int b = 5;
+		int c = 1;
 		linfo = loginInfo;
 		boolean role = selectRole();
 		while (true) {
-			int a = 1;
-			int b = 5;
-			int c = 1;
-			System.out.println("   번호                제목                 게시자                   작성일자");
+			System.out.println("   번호                제목                  게시자                   작성일자");
 			System.out.println("----------------------------------------------------------------------------");
 			next(a, b);
 			System.out.println("\n\t\t\t\t\t" + c + "/" + pageAll());
@@ -91,6 +91,10 @@ public class AnonymousboardManagement extends Management {
 					} else {
 						System.out.println("이전 페이지가 없습니다");
 					}
+				} else if (menuNo == 8) {
+					// 뒤로가기
+					back();
+					break;
 				} else if (menuNo == 6) {
 					// 뒤로가기
 					back();
@@ -106,7 +110,7 @@ public class AnonymousboardManagement extends Management {
 	protected void menuPrint(boolean role) {
 		String menu = "";
 		if (role) {
-			menu = "         1.글 조회  ::  2.글 작성  ::  3.글 수정  ::  4.글 삭제  ::  5. 글 검색\n\n"
+			menu = "         1.글 조회  ::  2.글 작성  ::  3.글 검색  ::  4.글 수정  ::  5. 글 삭제\n\n"
 					+ "              6. 다음 페이지  ::  7. 이전 페이지  ::  8. 뒤로가기";
 		} else {
 			menu = "   1.글 조회  ::  2. 글 작성  ::  3. 글 검색  ::  4. 다음 페이지  ::  5. 이전페이지  ::  6.뒤로가기   ";
@@ -287,7 +291,7 @@ public class AnonymousboardManagement extends Management {
 		}
 		List<Anonymousboard> list = aDAO.searchboard(info);
 		System.out.println("검색 결과");
-		System.out.println("   번호              제목                 게시자                     작성일자");
+		System.out.println("   번호                제목                  게시자                   작성일자");
 		System.out.println("----------------------------------------------------------------------------");
 		for (Anonymousboard anonymousboard : list) {
 			System.out.println(anonymousboard);

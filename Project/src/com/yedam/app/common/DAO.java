@@ -1,16 +1,15 @@
 package com.yedam.app.common;
 
-import java.io.*;
 import java.sql.*;
-import java.util.*;
+
 
 public class DAO {
 
 	// Oracle 연결 정보
-	private String jdbc_driver;
-	private String oracle_url;
-	private String connectedId;
-	private String connectedpwd;
+	private String jdbc_driver = "oracle.jdbc.driver.OracleDriver";
+	private String oracle_url = "jdbc:oracle:thin:@localhost:1521:xe";
+	private String connectedId = "hr";
+	private String connectedpwd = "hr";
 	// 각 메소드에서 공통적으로 사용하는 필드
 
 	protected Connection conn;
@@ -19,7 +18,7 @@ public class DAO {
 	protected ResultSet rs;
 
 	public void connect() {
-		dbConfig();
+//		dbConfig();
 		try {
 			// 1. JDBC Driver 로딩
 			Class.forName(jdbc_driver);
@@ -32,7 +31,7 @@ public class DAO {
 		}
 	}
 
-	private void dbConfig() {
+/*	private void dbConfig() {
 		String resource = "config/db.properties";
 		Properties properties = new Properties();
 
@@ -47,7 +46,7 @@ public class DAO {
 		connectedId = properties.getProperty("id");
 		connectedpwd = properties.getProperty("password");
 	}
-
+*/
 	// 4. 자원 해제
 	public void disconnect() {
 		try {

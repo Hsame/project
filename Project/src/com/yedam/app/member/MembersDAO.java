@@ -81,10 +81,10 @@ public class MembersDAO extends DAO {
 			connect();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("SELECT * FROM members");
+			
 			while (rs.next()) {
 				Member members = new Member();
-				members.setMemberId("member_id");
-				
+				members.setMemberId(rs.getString("member_id"));
 				list.add(members);
 			}
 		} catch (SQLException e) {

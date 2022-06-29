@@ -74,14 +74,15 @@ public class LoginControl {
 		return null;
 	}
 
-	
     private boolean idCheck(String id) {
         boolean check = true;
         Member member = equal(id);
-        if(member == null)
+        if(member == null) {
             check = false;
+        }
         return check;
     }
+    
 	private void login() {
 		Member info = new Member();
 		System.out.print("아이디 (0을 입력하면 종료)> ");

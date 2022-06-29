@@ -145,7 +145,9 @@ public class FreeboardDAO extends DAO {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM (SELECT ROWNUM num, no,title,content,id,regdate FROM FREE) WHERE num BETWEEN " + firstPage+" and "+lastPage);
+			rs = stmt.executeQuery("SELECT * FROM (SELECT ROWNUM num, no,title,content,id,regdate FROM FREE) "
+					+ "WHERE num BETWEEN " + firstPage+" and "+lastPage + 
+					"ORDER BY ROWNUM");
 			while (rs.next()) {
 				Freeboard freeboard = new Freeboard();
 				freeboard.setNo(rs.getInt("no"));

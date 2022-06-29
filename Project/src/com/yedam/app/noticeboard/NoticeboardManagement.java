@@ -17,7 +17,7 @@ public class NoticeboardManagement extends Management {
 		linfo = loginInfo;
 		boolean role = selectRole();
 		while (true) {
-			System.out.println("   번호              제목                    게시자                   작성일자");
+			System.out.println("   번호                 제목                게시자                  작성일자");
 			System.out.println("----------------------------------------------------------------------------");
 			next(a, b);
 			System.out.println("\n\t\t\t\t\t" + c + "/" + pageAll());
@@ -41,18 +41,18 @@ public class NoticeboardManagement extends Management {
 					search();
 				} else if (menuNo == 6) {
 					if (c < pageAll()) {
-					a += 5;
-					b += 5;
-					c++;
+						a += 5;
+						b += 5;
+						c++;
 					} else {
 						System.out.println("다음 페이지가 없습니다");
 					}
 				} else if (menuNo == 7) {
 					// 뒤로가기
 					if (c > 1) {
-					a -= 5;
-					b -= 5;
-					c--;
+						a -= 5;
+						b -= 5;
+						c--;
 					} else {
 						System.out.println("이전 페이지가 없습니다");
 					}
@@ -63,6 +63,7 @@ public class NoticeboardManagement extends Management {
 				} else {
 					showInputError();
 				}
+			}
 				if (!role) {
 					if (menuNo == 1) {
 						// 글 조회 -- 번호로(no)
@@ -75,28 +76,27 @@ public class NoticeboardManagement extends Management {
 							a += 5;
 							b += 5;
 							c++;
-							} else {
-								System.out.println("다음 페이지가 없습니다");
-							}
+						} else {
+							System.out.println("다음 페이지가 없습니다");
+						}
 					} else if (menuNo == 4) {
+						// 뒤로가기
 						if (c > 1) {
-						a -= 5;
-						b -= 5;
-						c--;
+							a -= 5;
+							b -= 5;
+							c--;
 						} else {
 							System.out.println("이전 페이지가 없습니다");
 						}
 					} else if (menuNo == 5) {
-						// 뒤로가기
-						back();
-						break;
-					} else {
-						showInputError();
+							back();
+							break;
+						} else {
+							showInputError();
+						}
 					}
 				}
 			}
-		}
-	}
 
 	@Override
 	protected void menuPrint(boolean role) {

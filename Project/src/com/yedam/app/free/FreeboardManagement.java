@@ -16,7 +16,7 @@ public class FreeboardManagement extends Management {
 		linfo = loginInfo;
 		boolean role = selectRole();
 		while (true) {
-			System.out.println("   번호                제목                게시자                   작성일자");
+			System.out.println("   번호                제목                  게시자                   작성일자");
 			System.out.println("----------------------------------------------------------------------------");
 			next(a, b);
 			System.out.println("\n\t\t\t\t\t" + c + "/" + pageAll());

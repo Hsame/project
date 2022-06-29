@@ -285,7 +285,7 @@ public class AnonymousboardDAO extends DAO {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM (SELECT ROWNUM num, no,title,content,id,regdate FROM anonymous) WHERE num BETWEEN " + firstPage+" and "+lastPage);
+			rs = stmt.executeQuery("SELECT * FROM (SELECT ROWNUM num, no,title,content,id,regdate FROM anonymous) WHERE num BETWEEN " + firstPage+" and "+lastPage + "ORDER BY no");
 			while (rs.next()) {
 				Anonymousboard anonymous = new Anonymousboard();
 				anonymous.setNo(rs.getInt("no"));

@@ -298,7 +298,7 @@ public class NoticeboardDAO extends DAO{
 		try {
 			connect();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM (SELECT ROWNUM num, no,title,content,id,regdate FROM notice) WHERE num BETWEEN " + firstPage+" and "+lastPage);
+			rs = stmt.executeQuery("SELECT * FROM (SELECT ROWNUM num, no,title,content,id,regdate FROM notice) WHERE num BETWEEN " + firstPage+" and "+lastPage + "ORDER BY ROWNUM");
 			while (rs.next()) {
 				Noticeboard noticeboard = new Noticeboard();
 				noticeboard.setNo(rs.getInt("no"));
